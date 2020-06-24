@@ -29,7 +29,8 @@ public:
 	node* Delete_Min(node*); //извлечение минимума
 	void Revert_list(node*); //обратный список
 	int Display(node*); //вывод
-	void Output_Child(node*); //вывод детей
+	void Output_Child(node*, int); //вывод детей
+	void Output_Sibling(node*, int);
 	node* Search(node*, int); //поиск узла в биномиальной куче
 	int Decrease_node(node*, int, int); //уменьшение значения узла
 	int Delete(node*, int); //удаление узла в биномиальной куче
@@ -180,14 +181,17 @@ int BinomialHeap::Display(node* H)
 	node* p;
 	p = H;
 	bool count = 1;
+	int i = 0;
 	while (p != NULL)
 	{
 		do
 		{
 			cout << p->key;
-			if(p->child!=NULL)
-				Output_Child(p->child);
-			
+			if (p->child != NULL)
+			{
+				i = 1;
+				Output_Child(p->child, i);
+			}			
 			if (p->sibling != NULL)
 			{
 				count = 1;
@@ -201,20 +205,34 @@ int BinomialHeap::Display(node* H)
 }
 
 
-void BinomialHeap::Output_Child(node* H1)
+void BinomialHeap::Output_Child(node* H1, int i)
 {
 	node* ch;
 	ch = H1;
 	bool count = 1;
 	do
 	{
-		cout << " -> "<<ch->key ;
-		if (ch->sibling != NULL) Output_Child(ch->sibling);
+		cout << " ->  level " <<i<< ": ";
+		cout << "left: " << ch->key<< endl;
+		if (ch->sibling != NULL)
+		{
+			Output_Sibling(ch->sibling, i);
+		}
 		if (ch->child != NULL)
+		{
+			i++;
 			count = 1;
+		}
 		else count = 0;
 		ch = ch->child;
 	} while (count);
+}
+
+
+void BinomialHeap::Output_Sibling(node* H1, int i)
+{
+	cout << " ->  level " << i << ": ";
+	cout << "right: "<< H1->key<<endl;
 }
 
 
